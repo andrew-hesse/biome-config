@@ -1,7 +1,16 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  // Universal house preset: the formatter style and linter baseline shared by
+  // every repo regardless of stack (Hono, Astro, Next, plain TS, CLIs). Stack-
+  // specific linter exceptions belong in a derived preset (./biome.jsonc for
+  // Hono/cloudflare) or in the consuming repo, never here.
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
+    // Sane default for repos that do NOT set their own files.includes. Biome
+    // REPLACES (does not merge) this array when a consumer declares its own
+    // includes, so a repo with custom includes must re-list the excludes it
+    // still wants (notably "!**/*.svg"). .wrangler/public are common build
+    // outputs and harmless to exclude where absent.
     "includes": [
       "**",
       "!dist",
@@ -21,8 +30,7 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "style": { "useImportType": "error", "useExportType": "error", "useShorthandFunctionType": "off" },
-      "a11y": { "noSvgWithoutTitle": "off", "useSemanticElements": "off", "useFocusableInteractive": "off" }
+      "style": { "useImportType": "error", "useExportType": "error" }
     }
   },
   "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } },
