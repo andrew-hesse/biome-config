@@ -1,0 +1,14 @@
+{
+  "name": "@ahesse/biome-config",
+  "version": "1.0.0",
+  "description": "Shared Biome house config for cloudflare-org apps.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.h.ahesse.dev/infra/biome-config.git"
+  },
+  "exports": {
+    "./biome": "./biome.jsonc"
+  },
+  "files": ["biome.jsonc"]
+}
