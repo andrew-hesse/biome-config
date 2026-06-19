@@ -57,20 +57,28 @@ those repos keep an inlined config instead of this dependency.
 
 ### A repo with its own files.includes
 
-Biome **replaces** (does not merge) the `files.includes` array when a consumer
-declares its own. A repo that needs custom includes therefore loses the base
-excludes and must re-list the ones it still wants, in particular `"!**/*.svg"`
-(Biome 2.5 parses `.svg` and chokes on valid SVG markup) and `"!**/*.css"`:
+Biome **concatenates** the `files.includes` arrays on extend (base's patterns
+first, then the consumer's) and evaluates them in order, last match winning.
+Two consequences:
+
+- Base's `"**"` stays in effect, so a consumer's positive globs (e.g.
+  `"src/**"`) do **not** narrow what is linted. To keep something out, add a
+  negative pattern; do not rely on an allowlist of positive globs.
+- A broad positive pattern listed after base's excludes re-includes what they
+  excluded. `"**"` (or `"src/**"`) placed after base's `"!**/*.svg"` pulls SVGs
+  back in, so a consumer that wants them kept out must repeat `"!**/*.svg"`
+  after its own broad patterns (Biome 2.5 parses `.svg` and chokes on valid SVG
+  markup).
 
 ```jsonc
 {
   "extends": ["@ahesse/biome-config/base"],
-  "files": { "includes": ["src/**", "!**/generated", "!**/*.css", "!**/*.svg"] }
+  "files": { "includes": ["**", "!docs/vendor", "!**/*.svg"] }
 }
 ```
 
-Linter rules, by contrast, do merge, so a repo can add or override individual
-rules without restating the baseline.
+Linter rules also merge (deep, last match wins), so a repo can add or override
+individual rules without restating the baseline.
 
 ## What it sets
 

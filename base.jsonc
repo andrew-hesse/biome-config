@@ -7,9 +7,11 @@
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
     // Sane default for repos that do NOT set their own files.includes. Biome
-    // REPLACES (does not merge) this array when a consumer declares its own
-    // includes, so a repo with custom includes must re-list the excludes it
-    // still wants (notably "!**/*.svg"). .wrangler/public are common build
+    // CONCATENATES this array with a consumer's own includes (base first, then
+    // the consumer; last match wins), so the "**" and these excludes stay in
+    // effect on extend. A consumer that re-includes a broad path ("**",
+    // "src/**") after these can pull back what base excluded and must repeat
+    // the exclude (notably "!**/*.svg"). .wrangler/public are common build
     // outputs and harmless to exclude where absent.
     "includes": [
       "**",
