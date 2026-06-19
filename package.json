@@ -1,6 +1,6 @@
 {
   "name": "@ahesse/biome-config",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Shared Biome house config for cloudflare-org apps.",
   "license": "MIT",
   "repository": {
