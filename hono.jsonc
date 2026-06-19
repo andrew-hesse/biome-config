@@ -1,0 +1,32 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  // Hono preset: the universal base plus the linter exceptions that only make
+  // sense for the Hono + Alpine Workers (the cloudflare org). Consumed as
+  // "@ahesse/biome-config/hono" ("@ahesse/biome-config/biome" is a deprecated
+  // alias of this file). Non-Hono repos should extend
+  // "@ahesse/biome-config/base" instead so they keep the recommended a11y
+  // rules. Adds only linter deltas (which merge), so it inherits base's
+  // files.includes, formatter, and assist unchanged.
+  "extends": ["./base.jsonc"],
+  "linter": {
+    "rules": {
+      "style": {
+        // Hono's jsxRenderer augments `interface ContextRenderer` via declaration
+        // merging in `declare module "hono"`; rewriting that call-signature
+        // interface to a type alias breaks the merge (duplicate identifier).
+        "useShorthandFunctionType": "off"
+      },
+      "a11y": {
+        // Decorative icons inside labeled controls carry no extra semantics; the
+        // control's aria-label is the a11y handle.
+        "noSvgWithoutTitle": "off",
+        // React-oriented rules that misread Hono + Alpine: they don't recognize
+        // Hono's lowercase numeric `tabindex={0}` or Alpine's
+        // `x-bind:aria-checked`, so they false-positive on intentional accessible
+        // custom ARIA widgets. Every other a11y rule stays on.
+        "useSemanticElements": "off",
+        "useFocusableInteractive": "off"
+      }
+    }
+  }
+}
