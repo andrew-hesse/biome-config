@@ -19,10 +19,6 @@ Two entry points, picked by stack:
   Hono repos; it switches off a handful of a11y/style rules that false-positive
   on Hono's JSX and Alpine attributes.
 
-`@ahesse/biome-config/biome` is a deprecated alias of `/hono`, kept so the
-cloudflare repos already pinned to it keep resolving. New repos should name the
-preset they actually use.
-
 ## Consume it
 
 Add it as a dev dependency (pnpm git dependency, pinned to a tag):
@@ -31,7 +27,7 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.1.0"
+    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.2.0"
   }
 }
 ```
@@ -97,7 +93,7 @@ switched off for Hono + Alpine.
 Bump `version` in `package.json` and tag:
 
 ```bash
-git tag v1.1.0 && git push origin v1.1.0
+git tag v1.2.0 && git push origin v1.2.0
 ```
 
 Consumers pick it up on their next Renovate bump or a manual dependency update.
