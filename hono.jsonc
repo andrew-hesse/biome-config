@@ -1,13 +1,16 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
-  // Hono preset: the universal base plus the linter exceptions that only make
-  // sense for the Hono + Alpine Workers (the cloudflare org). Consumed as
-  // "@ahesse/biome-config/hono" ("@ahesse/biome-config/biome" is a deprecated
-  // alias of this file). Non-Hono repos should extend
-  // "@ahesse/biome-config/base" instead so they keep the recommended a11y
-  // rules. Adds only linter deltas (which merge), so it inherits base's
-  // files.includes, formatter, and assist unchanged.
-  "extends": ["./base.jsonc"],
+  // Hono overlay: ONLY the linter exceptions that make sense for the Hono +
+  // Alpine Workers (the cloudflare org). This file is a delta layer, NOT a full
+  // config - it deliberately does not extend base. Biome does not resolve a
+  // nested `extends` when a config is itself pulled in through a package export
+  // (base would silently drop and Biome would fall back to its formatter
+  // defaults), so composition is done at the CONSUMER instead:
+  //
+  //   "extends": ["@ahesse/biome-config/base", "@ahesse/biome-config/hono"]
+  //
+  // base supplies the formatter/linter baseline; this overlay turns off the few
+  // a11y/style rules that false-positive on Hono's JSX and Alpine attributes.
   "linter": {
     "rules": {
       "style": {
