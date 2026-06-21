@@ -13,11 +13,15 @@ Two entry points, picked by stack:
 
 - **`@ahesse/biome-config/base`** is the universal style and linter baseline for
   any stack (plain TS, CLIs, cron jobs, Astro, Next, ...). It keeps Biome's
-  recommended a11y rules on.
-- **`@ahesse/biome-config/hono`** is `base` plus the linter exceptions that only
-  make sense for Hono + Alpine Workers (the cloudflare org). Use it only for
-  Hono repos; it switches off a handful of a11y/style rules that false-positive
-  on Hono's JSX and Alpine attributes.
+  recommended a11y rules on. Most repos use just this.
+- **`@ahesse/biome-config/hono`** is a small **delta overlay** for Hono + Alpine
+  Workers (the cloudflare org). It is NOT a standalone config: it only switches
+  off a handful of a11y/style rules that false-positive on Hono's JSX and Alpine
+  attributes, and must be layered **on top of** `base` (see below).
+
+Biome does not resolve a nested `extends` when a config is pulled in through a
+package export, so the overlay cannot extend `base` itself — composition happens
+in the consuming repo by listing both presets.
 
 ## Consume it
 
@@ -27,19 +31,29 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.2.0"
+    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.2.1"
   }
 }
 ```
 
 Then reduce the repo's Biome config to the extend (plus any genuinely
-unavoidable per-repo override below it):
+unavoidable per-repo override below it). Non-Hono repos use `base` alone:
 
 ```jsonc
 // biome.jsonc
 {
   "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
   "extends": ["@ahesse/biome-config/base"]
+}
+```
+
+Hono/cloudflare repos layer the overlay on top — order matters (base first):
+
+```jsonc
+// biome.jsonc
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  "extends": ["@ahesse/biome-config/base", "@ahesse/biome-config/hono"]
 }
 ```
 
@@ -84,16 +98,17 @@ individual rules without restating the baseline.
 `noNonNullAssertion` override, and `files.includes` that excludes build output,
 generated files, CSS (Tailwind owns it), and SVG.
 
-`hono`: everything in `base`, plus `useShorthandFunctionType`,
-`noSvgWithoutTitle`, `useSemanticElements`, and `useFocusableInteractive`
-switched off for Hono + Alpine.
+`hono`: a delta overlay (layered after `base`) that switches off
+`useShorthandFunctionType`, `noSvgWithoutTitle`, `useSemanticElements`, and
+`useFocusableInteractive` for Hono + Alpine. Nothing else - it relies on `base`
+for the formatter and linter baseline.
 
 ## Release
 
 Bump `version` in `package.json` and tag:
 
 ```bash
-git tag v1.2.0 && git push origin v1.2.0
+git tag v1.2.1 && git push origin v1.2.1
 ```
 
 Consumers pick it up on their next Renovate bump or a manual dependency update.

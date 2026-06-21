@@ -1,6 +1,6 @@
 {
   "name": "@ahesse/biome-config",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Shared Biome house config (base + hono presets) used across all orgs.",
   "license": "MIT",
   "repository": {
