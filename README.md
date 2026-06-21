@@ -31,7 +31,7 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.2.1"
+    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.3.0"
   }
 }
 ```
@@ -93,10 +93,12 @@ individual rules without restating the baseline.
 ## What it sets
 
 `base`: the Biome formatter (single quotes, no semicolons, trailing commas,
-2-space indent, 100 columns), the recommended linter with
-`useImportType`/`useExportType` as errors, import organizing, a test-file
-`noNonNullAssertion` override, and `files.includes` that excludes build output,
-generated files, CSS (Tailwind owns it), and SVG.
+2-space indent, 100 columns), the recommended linter plus a stricter "high bar"
+(`useImportType`/`useExportType`, `noUnusedImports`/`noUnusedVariables`,
+`useNodejsImportProtocol`, and `noExplicitAny` all as errors), import organizing,
+a test-file `noNonNullAssertion` override, and `files.includes` that excludes
+build output, generated files, CSS (Tailwind owns it), and SVG. A repo that
+legitimately needs `any` overrides `noExplicitAny` to `off` in its own config.
 
 `hono`: a delta overlay (layered after `base`) that switches off
 `useShorthandFunctionType`, `noSvgWithoutTitle`, `useSemanticElements`, and
@@ -108,7 +110,7 @@ for the formatter and linter baseline.
 Bump `version` in `package.json` and tag:
 
 ```bash
-git tag v1.2.1 && git push origin v1.2.1
+git tag v1.3.0 && git push origin v1.3.0
 ```
 
 Consumers pick it up on their next Renovate bump or a manual dependency update.

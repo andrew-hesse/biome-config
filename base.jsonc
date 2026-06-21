@@ -2,8 +2,8 @@
   "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
   // Universal house preset: the formatter style and linter baseline shared by
   // every repo regardless of stack (Hono, Astro, Next, plain TS, CLIs). Stack-
-  // specific linter exceptions belong in a derived preset (./biome.jsonc for
-  // Hono/cloudflare) or in the consuming repo, never here.
+  // specific linter exceptions belong in the hono overlay (./hono.jsonc) or in
+  // the consuming repo, never here.
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
     // Sane default for repos that do NOT set their own files.includes. Biome
@@ -32,7 +32,14 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "style": { "useImportType": "error", "useExportType": "error" }
+      // House "high bar" - stricter than Biome's recommended set. Unused
+      // imports/variables and untyped `any` are errors (not warnings), and Node
+      // builtins must use the `node:` protocol. A repo that legitimately needs
+      // `any` (e.g. mapping an untyped external API) overrides noExplicitAny to
+      // "off" in its own config.
+      "correctness": { "noUnusedImports": "error", "noUnusedVariables": "error" },
+      "style": { "useImportType": "error", "useExportType": "error", "useNodejsImportProtocol": "error" },
+      "suspicious": { "noExplicitAny": "error" }
     }
   },
   "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } },
