@@ -44,6 +44,12 @@
   },
   "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } },
   "overrides": [
-    { "includes": ["**/*.test.ts", "**/*.test.tsx"], "linter": { "rules": { "style": { "noNonNullAssertion": "off" } } } }
+    {
+      // Tests get slightly looser ergonomics than production code: non-null
+      // assertions on known-present fixtures, and `any` mock-casts. The high
+      // bar (no `any`) still applies to everything that ships in src.
+      "includes": ["**/*.test.ts", "**/*.test.tsx"],
+      "linter": { "rules": { "style": { "noNonNullAssertion": "off" }, "suspicious": { "noExplicitAny": "off" } } }
+    }
   ]
 }
