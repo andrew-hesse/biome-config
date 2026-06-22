@@ -21,7 +21,13 @@
       "!public",
       "!**/generated",
       "!**/*.css",
-      "!**/*.svg"
+      "!**/*.svg",
+      // Agent-tooling config: committed, but owned/formatted by their own tools
+      // (Claude Code, lefthook), not Biome. Excluding them keeps a whole-repo
+      // `biome check .` from flagging their formatting once they ship fleet-wide.
+      "!**/.claude",
+      "!**/lefthook.yml",
+      "!**/lefthook-local.yml"
     ]
   },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },
