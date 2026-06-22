@@ -65,6 +65,12 @@ and the self-hosted Forgejo runner. Repos whose CI runs on a public cloud
 (gitlab.com or github.com runners) cannot fetch it during `pnpm install`, so
 those repos keep an inlined config instead of this dependency.
 
+Because pnpm fetches this as a `git+https` dependency, **`git` must be on `PATH`
+wherever `pnpm install` runs**, including a Docker build stage. Minimal build
+images (Debian slim, Chainguard) do not ship `git`, so a Dockerfile that installs
+this config must add it (`apt-get install git` / `apk add git`) before `pnpm
+install`, or the build fails with `spawn git ENOENT`.
+
 ### A repo with its own files.includes
 
 Biome **concatenates** the `files.includes` arrays on extend (base's patterns
