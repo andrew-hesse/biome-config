@@ -1,0 +1,11 @@
+# Git hooks for this repo. Run `lefthook install` once after cloning to wire it
+# into .git/hooks. Requires lefthook + gitleaks on PATH
+# (`brew install lefthook gitleaks`).
+#
+# pre-commit: the fleet-standard preventive secret scan (uniform baseline),
+# complementing magpie's post-hoc org scan.
+pre-commit:
+  parallel: true
+  commands:
+    gitleaks:
+      run: gitleaks git --staged --no-banner --redact
