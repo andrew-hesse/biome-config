@@ -31,7 +31,7 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.3.0"
+    "@ahesse/biome-config": "git+https://git.h.ahesse.dev/infra/biome-config#v1.4.0"
   }
 }
 ```
@@ -65,11 +65,14 @@ and the self-hosted Forgejo runner. Repos whose CI runs on a public cloud
 (gitlab.com or github.com runners) cannot fetch it during `pnpm install`, so
 those repos keep an inlined config instead of this dependency.
 
-Because pnpm fetches this as a `git+https` dependency, **`git` must be on `PATH`
-wherever `pnpm install` runs**, including a Docker build stage. Minimal build
-images (Debian slim, Chainguard) do not ship `git`, so a Dockerfile that installs
-this config must add it (`apt-get install git` / `apk add git`) before `pnpm
-install`, or the build fails with `spawn git ENOENT`.
+Because pnpm fetches this as a `git+https` dependency, a Docker build stage that
+runs `pnpm install` needs two things minimal images omit: **`git` on `PATH`** (to
+clone the dependency) and a **CA bundle** (to verify the HTTPS certificate).
+Install both before `pnpm install` (`apt-get install -y git ca-certificates`, or
+`apk add git ca-certificates`). Without `git` the build fails `spawn git ENOENT`;
+without the CA bundle it fails `server certificate verification failed (CAfile:
+none)`. Debian slim ships neither; Chainguard's node image carries the CA bundle
+but still needs `git`.
 
 ### A repo with its own files.includes
 
