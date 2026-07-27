@@ -1,7 +1,7 @@
-# CLAUDE.md - `infra/biome-config`
+# CLAUDE.md - `andrew-hesse/biome-config`
 
-The shared Biome preset for every JS/TS repo on `git.h.ahesse.dev`, consumed as a
-pinned git dependency (`@ahesse/biome-config`). Two entry points: `base.jsonc`
+The shared Biome preset for every JS/TS repo, consumed as a tag-pinned `github:`
+dependency (`@ahesse/biome-config`). Two entry points: `base.jsonc`
 (the universal formatter + linter baseline) and `hono.jsonc` (a small delta
 overlay for Hono/Alpine JSX). `README.md` is the full consumer guide; this file
 covers editing the presets.
@@ -28,5 +28,5 @@ push the tag. Consumers pick it up via Renovate or a manual dep bump. See
 ## Conventions
 
 - No app code, build, tests, or CI here; the artifact is the JSONC config itself.
-- Land changes via a `tea` PR; `main` is not branch-protected. Describe changes as
+- Land changes via a `gh` PR; `main` is not branch-protected. Describe changes as
   a human dev (no AI attribution, no em-dashes).

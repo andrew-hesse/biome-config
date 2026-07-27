@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://git.h.ahesse.dev/infra/biome-config.git"
+    "url": "git+https://github.com/andrew-hesse/biome-config.git"
   },
   "exports": {
     "./base": "./base.jsonc",
