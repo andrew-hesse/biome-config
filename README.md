@@ -31,7 +31,7 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "github:andrew-hesse/biome-config#v1.4.0"
+    "@ahesse/biome-config": "github:andrew-hesse/biome-config#v1.5.0"
   }
 }
 ```
@@ -98,6 +98,18 @@ Two consequences:
 Linter rules also merge (deep, last match wins), so a repo can add or override
 individual rules without restating the baseline.
 
+### Claude Code worktrees
+
+The base preset excludes Claude Code's own committed configuration, including
+direct `.claude/*.json` files and the `.claude/agents`, `.claude/commands`,
+`.claude/hooks`, `.claude/rules`, and `.claude/skills` directories. It does not
+exclude `.claude` itself.
+
+This distinction keeps native worktrees under `.claude/worktrees/<name>`
+lintable. A whole-directory `!**/.claude` exclusion also matches the worktree's
+absolute path when `biome check .` runs inside it, causing Biome to process zero
+files and fail the command.
+
 ## What it sets
 
 `base`: the Biome formatter (single quotes, no semicolons, trailing commas,
@@ -118,7 +130,7 @@ for the formatter and linter baseline.
 Bump `version` in `package.json` and tag:
 
 ```bash
-git tag v1.3.0 && git push origin v1.3.0
+git tag v1.5.0 && git push origin v1.5.0
 ```
 
 Consumers pick it up on their next Renovate bump or a manual dependency update.
