@@ -22,10 +22,17 @@
       "!**/generated",
       "!**/*.css",
       "!**/*.svg",
-      // Agent-tooling config: committed, but owned/formatted by their own tools
-      // (Claude Code, lefthook), not Biome. Excluding them keeps a whole-repo
-      // `biome check .` from flagging their formatting once they ship fleet-wide.
-      "!**/.claude",
+      // Agent-tooling config is committed but owned/formatted by Claude Code,
+      // not Biome. Exclude only its config files and known tooling directories:
+      // excluding the entire .claude directory also hides source in native
+      // .claude/worktrees worktrees from `biome check .`.
+      "!**/.claude/CLAUDE.md",
+      "!**/.claude/*.json",
+      "!**/.claude/agents",
+      "!**/.claude/commands",
+      "!**/.claude/hooks",
+      "!**/.claude/rules",
+      "!**/.claude/skills",
       "!**/lefthook.yml",
       "!**/lefthook-local.yml"
     ]
