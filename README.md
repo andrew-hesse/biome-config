@@ -110,6 +110,28 @@ lintable. A whole-directory `!**/.claude` exclusion also matches the worktree's
 absolute path when `biome check .` runs inside it, causing Biome to process zero
 files and fail the command.
 
+Because those exclusions are now file-level rather than a whole directory, the
+concatenation rule above applies to them: a consumer whose own `files.includes`
+lists a broad positive like `"**/*.json"` re-includes `.claude/settings.json` and
+starts failing `biome check .` on a file Claude Code owns and formats. Repeat the
+negative after the consumer's positive globs:
+
+```jsonc
+{
+  "extends": ["@ahesse/biome-config/base"],
+  "files": { "includes": ["**/*.ts", "**/*.json", "!**/.claude/*.json"] }
+}
+```
+
+### Comments belong in biome.jsonc, not biome.json
+
+Biome parses `biome.json` as strict JSON. A `//` comment there is a parse error
+and Biome falls back to its **default** configuration rather than stopping, so
+the visible symptom is a large unexplained formatting diff (tabs, different line
+widths) rather than a config complaint. The parse diagnostic is printed, but at
+the top of the output, above the flood of format errors it causes. Rename the
+file to `biome.jsonc` if a comment is worth having.
+
 ## What it sets
 
 `base`: the Biome formatter (single quotes, no semicolons, trailing commas,
