@@ -42,7 +42,7 @@ unavoidable per-repo override below it). Non-Hono repos use `base` alone:
 ```jsonc
 // biome.jsonc
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["@ahesse/biome-config/base"]
 }
 ```
@@ -52,10 +52,23 @@ Hono/cloudflare repos layer the overlay on top — order matters (base first):
 ```jsonc
 // biome.jsonc
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["@ahesse/biome-config/base", "@ahesse/biome-config/hono"]
 }
 ```
+
+Point `$schema` at the schema file that ships inside the installed
+`@biomejs/biome` package, not at a versioned `biomejs.dev/schemas/<version>/`
+URL. The versioned URL is a copy of one release that no dependency update
+touches: Renovate bumps `@biomejs/biome`, the URL stays behind, and every
+`biome check` then prints a "configuration schema version does not match"
+notice. The local file always matches the CLI that actually runs, which is
+what Biome's configuration reference recommends. Editors resolve it once
+`pnpm install` has run. If an editor cannot resolve the local path, the
+versioned URL is the documented fallback, but then its version has to be kept
+in step with the installed CLI by hand. Only the consuming repo's own
+`$schema` is checked: the URLs inside these presets are not compared against
+the CLI when they are loaded through `extends`.
 
 ### Reachability
 
