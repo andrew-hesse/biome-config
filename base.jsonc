@@ -1,5 +1,4 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
   // Universal house preset: the formatter style and linter baseline shared by
   // every repo regardless of stack (Hono, Astro, Next, plain TS, CLIs). Stack-
   // specific linter exceptions belong in the hono overlay (./hono.jsonc) or in
@@ -44,7 +43,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       // House "high bar" - stricter than Biome's recommended set. Unused
       // imports/variables and untyped `any` are errors (not warnings), and Node
       // builtins must use the `node:` protocol. A repo that legitimately needs

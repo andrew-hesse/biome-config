@@ -1,5 +1,4 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
   // Hono overlay: ONLY the linter exceptions that make sense for the Hono +
   // Alpine Workers (the cloudflare org). This file is a delta layer, NOT a full
   // config - it deliberately does not extend base. Biome does not resolve a
