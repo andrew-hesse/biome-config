@@ -31,7 +31,7 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "github:andrew-hesse/biome-config#v1.5.0"
+    "@ahesse/biome-config": "github:andrew-hesse/biome-config#v1.6.0"
   }
 }
 ```
@@ -66,9 +66,15 @@ notice. The local file always matches the CLI that actually runs, which is
 what Biome's configuration reference recommends. Editors resolve it once
 `pnpm install` has run. If an editor cannot resolve the local path, the
 versioned URL is the documented fallback, but then its version has to be kept
-in step with the installed CLI by hand. Only the consuming repo's own
-`$schema` is checked: the URLs inside these presets are not compared against
-the CLI when they are loaded through `extends`.
+in step with the installed CLI by hand.
+
+The presets themselves carry no `$schema`. Biome 2.6 compares a preset's
+`$schema` version with the CLI when the preset is loaded through `extends`, and
+prints the same notice in every consuming repo when they differ, even by a
+patch release; a preset has no local schema file to point at instead. The rules
+use `"preset": "recommended"`, the Biome 2.6 spelling: Biome 2.6 marks
+`"recommended": true` as deprecated, and Biome 2.5 enables the same rules with
+either.
 
 ### Reachability
 
@@ -165,7 +171,7 @@ for the formatter and linter baseline.
 Bump `version` in `package.json` and tag:
 
 ```bash
-git tag v1.5.0 && git push origin v1.5.0
+git tag v1.6.0 && git push origin v1.6.0
 ```
 
 Consumers pick it up on their next Renovate bump or a manual dependency update.

@@ -14,6 +14,10 @@ covers editing the presets.
   overlay silently drops base's rules.
 - Put stack-specific exceptions in `hono.jsonc` or the consuming repo, never in
   `base`. `base` is the universal high bar; widening it loosens every repo.
+- Keep `$schema` out of the presets. Biome 2.6 checks a preset's `$schema`
+  version against the CLI and prints a notice in every consuming repo on any
+  mismatch, even a patch release (see README "Consume it"). To validate an edit,
+  run `biome check .` in a consuming repo with the change linked in.
 - `files.includes` arrays CONCATENATE on extend (base first, last match wins), so
   a consumer's positive glob does not narrow what base lints, and a broad positive
   glob re-includes what base excluded (repeat negatives like `!**/*.svg`).
