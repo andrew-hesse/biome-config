@@ -32,5 +32,9 @@ push the tag. Consumers pick it up via Renovate or a manual dep bump. See
 ## Conventions
 
 - No app code, build, tests, or CI here; the artifact is the JSONC config itself.
+- No Renovate here: there are no dependencies to update. Do not add a
+  `renovate.json` extending `github>andrew-hesse/renovate`; that preset is private,
+  and Renovate cannot read a private preset from a public repo, so it would halt
+  with a config error.
 - Land changes via a `gh` PR; `main` is not branch-protected. Describe changes as
   a human dev (no AI attribution, no em-dashes).
