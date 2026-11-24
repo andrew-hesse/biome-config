@@ -7,6 +7,8 @@ same idea as `infra/renovate-config`, but Biome resolves `extends` from
 `node_modules`, so it ships as a dependency rather than a runtime `local>`
 preset).
 
+Quoted YAML scalars use double quotes across consumers.
+
 ## Presets
 
 Two entry points, picked by stack:
@@ -31,7 +33,7 @@ Add it as a dev dependency (pnpm git dependency, pinned to a tag):
 // package.json
 {
   "devDependencies": {
-    "@ahesse/biome-config": "github:andrew-hesse/biome-config#v1.6.0"
+    "@ahesse/biome-config": "github:andrew-hesse/biome-config#v1.7.0"
   }
 }
 ```
