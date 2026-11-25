@@ -116,6 +116,12 @@ Two consequences:
 }
 ```
 
+- A folder base excludes (`!public`, `!dist`) comes back only as a whole: base's
+  `!public` stops Biome walking into the folder, so a consumer's `"public/sw.js"` or
+  `"public/**"` checks nothing there. List the folder itself, `"public"`, then
+  exclude what should stay out (`"!public/vendor"`). Verified with Biome 2.6.6: of
+  those three patterns only `"public"` added the folder's files.
+
 Linter rules also merge (deep, last match wins), so a repo can add or override
 individual rules without restating the baseline.
 
